@@ -1,0 +1,14 @@
+[package]
+name = "TarascaPay"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+
+[[bin]]
+name = "crash_course_intro"
+path = "CrashCourse/00_Intro/main.rs"
+
+[[bin]]
+name = "datatypes"
+path = "CrashCourse/01_Datatypes/main.rs"
