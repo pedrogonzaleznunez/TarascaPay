@@ -14,5 +14,5 @@ name = "datatypes"
 path = "CrashCourse/01_Datatypes/main.rs"
 
 [[bin]]
-name = "operators"
-path = "CrashCourse/02_Operators/main.rs"
+name = "comparison"
+path = "CrashCourse/03_Comparison/main.rs"
