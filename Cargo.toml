@@ -12,3 +12,7 @@ path = "CrashCourse/00_Intro/main.rs"
 [[bin]]
 name = "datatypes"
 path = "CrashCourse/01_Datatypes/main.rs"
+
+[[bin]]
+name = "operators"
+path = "CrashCourse/02_Operators/main.rs"
