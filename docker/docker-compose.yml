@@ -1,0 +1,20 @@
+version: '3.8'
+
+name: tarasca-pay
+
+services:
+  # Servidor de Base de Datos PostgreSQL
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: tarascapay_postgres
+    environment:
+      POSTGRES_USER: tarasca_admin
+      POSTGRES_PASSWORD: tarasca_password
+      POSTGRES_DB: tarascapay_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

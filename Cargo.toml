@@ -1,9 +1,9 @@
-[package]
-name = "TarascaPay"
-version = "0.1.0"
-edition = "2021"
+[workspace]
+members = [
+    "api",
+    "web",
+    "shared"
+]
+resolver = "2"
 
-[dependencies]
-axum = "0.8.9"
-serde = { version = "1.0.228", features = ["derive"] }
-tokio = { version = "1.52.3", features = ["full"] }
+
