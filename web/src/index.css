@@ -1,0 +1,87 @@
+@import 'tailwindcss';
+
+/* Paleta y tokens propios de TarascaPay. */
+@theme {
+  --color-brand-50: #ecfdf5;
+  --color-brand-100: #d1fae5;
+  --color-brand-200: #a7f3d0;
+  --color-brand-300: #6ee7b7;
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-brand-800: #065f46;
+  --color-brand-900: #064e3b;
+
+  --font-sans:
+    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue',
+    sans-serif;
+}
+
+/* El tema oscuro se activa con la clase `dark` en <html>, que controla el
+   selector de tema del perfil (y por defecto sigue al sistema). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-slate-50 text-slate-900 antialiased;
+    @apply dark:bg-slate-950 dark:text-slate-100;
+    font-family: var(--font-sans);
+    /* Respeta el notch en iOS. */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  /* Anillo de foco visible y consistente en toda la app. */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-500;
+  }
+
+  /* Los importes se leen mejor con cifras de ancho fijo. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-slate-200 bg-white shadow-sm;
+    @apply dark:border-slate-800 dark:bg-slate-900;
+  }
+
+  .field {
+    @apply w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm;
+    @apply placeholder:text-slate-400 focus:border-brand-500 focus:ring-2 focus:ring-brand-500/30;
+    @apply outline-none transition;
+    @apply dark:border-slate-700 dark:bg-slate-950 dark:placeholder:text-slate-500;
+  }
+
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300;
+  }
+}
+
+/* Animación de entrada de los modales y las tarjetas nuevas. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-rise {
+  animation: rise 0.18s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-rise {
+    animation: none;
+  }
+}

@@ -1,9 +1,12 @@
-version: '3.8'
-
 name: tarasca-pay
 
+# Levanta todo desde la raíz del repositorio:
+#   docker compose -f docker/docker-compose.yml up --build
+#
+# Para desarrollo, si sólo querés la base de datos:
+#   docker compose -f docker/docker-compose.yml up postgres_db
+
 services:
-  # Servidor de Base de Datos PostgreSQL
   postgres_db:
     image: postgres:16-alpine
     container_name: tarascapay_postgres
@@ -12,9 +15,39 @@ services:
       POSTGRES_PASSWORD: tarasca_password
       POSTGRES_DB: tarascapay_db
     ports:
-      - "5432:5432"
+      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      # La API espera a que la base acepte conexiones antes de migrar.
+      test: ['CMD-SHELL', 'pg_isready -U tarasca_admin -d tarascapay_db']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: tarascapay_api
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://tarasca_admin:tarasca_password@postgres_db:5432/tarascapay_db
+      # Cambiá esto en cualquier despliegue real.
+      JWT_SECRET: ${JWT_SECRET:-cambiame-por-un-secreto-largo-y-aleatorio}
+      HOST: 0.0.0.0
+      PORT: 3000
+      # Todo se sirve desde el mismo origen, así que no hace falta CORS.
+      CORS_ORIGINS: ''
+      RUST_LOG: api=info,tower_http=info,sqlx=warn
+    ports:
+      - '3000:3000'
+    volumes:
+      - uploads_data:/app/uploads
+    restart: unless-stopped
 
 volumes:
   postgres_data:
+  uploads_data:
